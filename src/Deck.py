@@ -12,7 +12,7 @@ class Deck:
         return self.__limit
 
     def getSlots(self):
-        print("You have " + str(self.__limit - len(self.__deck)) + " cards left")
+        # print("You have " + str(self.__limit - len(self.__deck)) + " cards left")
         return self.__limit - len(self.__deck)
 
     def getSize(self):
@@ -25,7 +25,6 @@ class Deck:
         shuffle(self.__deck)
 
     def sortTitle(self):
-        #TODO: BubbleSort
         didSwap = True
         sortCount = 1
 
@@ -41,7 +40,6 @@ class Deck:
         return
 
     def sortEdition(self):
-        # TODO: BubbleSort
         didSwap = True
         sortCount = 1
 

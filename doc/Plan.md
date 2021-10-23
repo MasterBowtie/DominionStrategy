@@ -57,9 +57,10 @@ It should walk the user through step at a time.
     createDeck()
     *   print welcoming message
     *   create and name Menu
-    *   add editions to Menu 
-    *   add "Restart" to Menu
-    *   add "Done" to Menu
+    *   add editions to menu 
+    *   add "Restart" to menu
+    *   add "Print" to menu
+    *   add "Done" to menu
  
     *   create keepGoing boolean
     *   start while loop dependant on keepGoing
@@ -67,6 +68,8 @@ It should walk the user through step at a time.
         *   check add edition selections to Deck
         *   elif result is "D"
             *   call EditDeck()
+        *   elif resule is "P"
+            *   print list
         *   elif result is "R"
             *   clear Deck
         *   elif result is "X"
@@ -75,12 +78,14 @@ It should walk the user through step at a time.
     EditDeck()
     *   print welcoming message
     *   create and name Menu
+    *   add "Done" to menu
     *   add "Save" to menu
     *   add "Remove" to menu
     *   add "Edition" to menu
     *   add "Cost" to menu
     *   add "Type" to menu
     *   add "Mixed" to menu
+    *   add "Print" to menu
 
     *   create keepGoing boolean
     *   start while loop
@@ -90,13 +95,106 @@ It should walk the user through step at a time.
         *   elif result "R"
             *   call removeCard()
         *   elif result "E"
-            *   call trimmed(3)
-        *   elif
+            *   clear trimDeck
+            *   call trimmedEdition()
+            *   call IntegerInput( message, 1, playDeck.slots or trim length)
+            *   draw cards to playDeck
+            *   return trimDeck to Deck
+        *   elif result "C"
+            *   clear trimDeck
+            *   call trimmedCost()
+            *   call IntegerInput( message, 1, playDeck.slots or trim length)
+            *   draw cards to playDeck
+            *   return trimDeck to Deck
+        *   elif result "T"
+            *   clear trimDeck
+            *   call trimmedType()
+            *   call IntegerInput( message, 1, playDeck.slots or trim length)
+            *   draw cards to playDeck
+            *   return trimDeck to Deck
+        *   elif result "M"
+            *   call trimMenu()
+            *   return trimDeck to Deck
+        *   elif result "D"
+            *   call playDeck()
+        *   elif result "P"
+            *   print current cards in playDeck
+        *   elif result "X"
+            *   keepGoing = False
 
-    trimmed(index: int)
+    trimmedEdition()
+    *   create menu list
+    *   iterate through deck
+        *   if edition in draw deck
+            *   add edition to menu list
+    *   create menu
+    *   add editions to menu
+    *   check input
+        *   if edition
+            *   add cards to trimDeck
+            
+
+    trimmedCost()
+    *   create menu list
+    *   iterate through deck
+        *   if card contains cost
+            *   add cost to menu list
+    *   create menu
+    *   add costs to menu
+    *   check input
+        *   add cards to trimDeck
     
+    trimmedType()
+    *   create menu list
+    *   iterate through deck
+        *   if card contains type
+            *   add type to menu list
+    *   create menu
+    *   add type to menu
+    *   check input
+        *   add cards to trimDeck
+    
+    trimMenu()
+    *   create menu
+    *   add edition, cost, type options to menu
+    *   add restart to menu
+    *   add draw to menu
+    *   start loop
+        *   check input
+            *   if "E"
+                *   call trimmedEdition()
+            *   if "C"
+                *   call trimmedCost()
+            *   if "T"
+                *   call trimmedType()
+            *   if "R"
+                *   return trimDeck to Deck
+            *   if "D"
+                *   call IntegerInput( message, 1, playDeck.slots or trimDeck.len)
+                *   draw cards to playDeck
+
+    playDeck()
+    *   draw cards to playDeck from Deck
+    *   check for "Young Witch"
+        *   add Bane Card
+    *   create menu
+    *   add Print to menu
+    *   add Save to menu
+    *   start loop
+        *   if "P"
+            *   print deck to screen
+        *   if "S"
+            *   call saveDeck()
+        *   if "X"
+            *   keepGoing = False
 
     getIntegerInput( message string, lowerbound int, upperbound int)
+    *   check if lower > upper
+    *   create variable for while loop
+    *   start while loop
+        *   save input from user
+        *   check if input is within range
+            *   return int
 
     getStringInput( message string)
     *   create variables for while loop
@@ -104,12 +202,6 @@ It should walk the user through step at a time.
         *   save input from user
         *   check if string is printable and not an empty string
             *   return string
-
-    
-    printCard()
-    *   call and save results for getIntegerInput for amount of cards
-    *   if input valid answer
-        *   call currentDeck.print(result)
 
     saveDeck()
     *   call and save results for getStringInput
@@ -257,17 +349,56 @@ It should walk the user through step at a time.
 
 ###Card
 
+    __init__( id, int ) 
+    
+    class variable for id
 
+    getID()
+    *   return id
+
+    getElement()
+    *   return KINGDOMCARDDECK [ id ]
+
+    getTitle()
+    *   return KINGDOMCARDDECK [ id ] [ 0 ]
+
+    getCost()
+    *   return KINGDOMCARDDECK [ id ] [ 1 ]
+
+    getEdition()
+    *   return KINGDOMECARDDECK [ id ] . index( self.getEditionName() ) 
+
+    getEditionName()
+    *   return KINGDOMECARDDECK [ id ] [ 3 ]
+
+    getType()
+    *   return KINGDOMCARDDECK [ id ] [ 2 ]
+
+    __str__()
+    *   return f"{Title} from {Edition}"
+
+    __repr__()
+    *   return f"{Title} from {Edition}: \n\t{Cost}\n\t{Type}"
+
+    __gt__( other: object )
+    *   if title > other.title
+        *   return True
+    *   else
+        *   return False
+
+    __ge__( other: object )
+    *   if edition > other.edition
+        *   return True
+    *   else
+        *   return False
 
 ## Phase 3: Implementation
-
 
 
 ## Phase 4: Testing & Debugging 
 
 
-## Phase 5: Deployment 
-
+## Phase 5: Deployment
 
 
 ## Phase 6: Maintenance

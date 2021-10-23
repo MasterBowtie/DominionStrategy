@@ -8,8 +8,11 @@ class Card:
     def getID(self):
         return self.__id
 
+    def getElement(self):
+        return KINGDOMCARDDECK[self.__id]
+
     def getTitle(self):
-        return str(KINGDOMCARDDECK[self.__id][0])
+        return KINGDOMCARDDECK[self.__id][0]
 
     def getCost(self):
         return KINGDOMCARDDECK[self.__id][1]
@@ -24,10 +27,10 @@ class Card:
         return KINGDOMCARDDECK[self.__id][2]
 
     def __str__(self):
-        return str(self.getTitle()) + " from " + str(self.getEditionName())
+        return self.getTitle() + " from " + self.getEditionName()
 
     def __repr__(self):
-        return str(self.getTitle()) + " from " + str(self.getEditionName()) + "\n\tCosts: " + self.getCost() + "\n\tType: " + self.getType()
+        return self.getTitle() + " from " + self.getEditionName() + "\n\tCosts: " + self.getCost() + "\n\tType: " + self.getType()
 
     def __gt__(self, other):
         if self.getTitle() > other.getTitle():
