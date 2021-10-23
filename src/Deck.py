@@ -2,6 +2,7 @@ from KingdomCards import KINGDOMCARDDECK, COST , CARDTYPE, GAMEEDITIONS
 from Cards import Card
 from random import shuffle
 
+
 class Deck:
     def __init__(self, limit=len(KINGDOMCARDDECK)):
         self.__deck = []
