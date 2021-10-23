@@ -2,11 +2,33 @@
 
 ## Phase 0: Requirements Specification
 
+This tool is to take the Dominion Card Game and make a supply (10 cards) of kingdoms cards for the user to play with.
+It should walk the user through step at a time.
 
-## Phase 1: System Analysis *(10%)*
+**1st:**
+*   selecting the editions that they are playing with
+
+**2nd**
+*   allowing them to customize the deck
+    *   By Edition
+    *   By Cost
+    *   By Type
+    *   By Name
+    *   Or any mix of the above
+    
+**Last**
+*   Saving the output to a file
+*   Starting over and playing again
 
 
-## Phase 2: Design *(30%)*
+## Phase 1: System Analysis 
+
+*   Collection of all the Kingdom Cards
+*   Collection of all Events
+*   Collection of all Projects
+*   Any other special Cards (Filled in as I collect editions)
+
+## Phase 2: Design 
 
 ###dominion.py
 
@@ -17,7 +39,7 @@
 
     __init__()
 
-    class variable of Deck, trimDeck, editionList
+    class variable of Deck, trimDeck, editionList, playDeck
 
     run()
     *   print welcoming message
@@ -50,6 +72,30 @@
         *   elif result is "X"
             *   keepGoing = False
 
+    EditDeck()
+    *   print welcoming message
+    *   create and name Menu
+    *   add "Save" to menu
+    *   add "Remove" to menu
+    *   add "Edition" to menu
+    *   add "Cost" to menu
+    *   add "Type" to menu
+    *   add "Mixed" to menu
+
+    *   create keepGoing boolean
+    *   start while loop
+        *   create variable to save results of menu
+        *   if result "S"
+            *   call saveCard()
+        *   elif result "R"
+            *   call removeCard()
+        *   elif result "E"
+            *   call trimmed(3)
+        *   elif
+
+    trimmed(index: int)
+    
+
     getIntegerInput( message string, lowerbound int, upperbound int)
 
     getStringInput( message string)
@@ -59,19 +105,6 @@
         *   check if string is printable and not an empty string
             *   return string
 
-    deckMenu()
-    *   create menu named "Deck"
-    *   add menu options for printing cards, displaying and saving the deck
-    *   start while loop based on keepGoing
-        *   command equal results of menu
-        *   if commmand is "P"
-            *   call printCard()
-        *   elif command is "D"
-            *   call currentDeck.print()
-        *   elif command is "S"
-            *   call saveDeck()
-        *   elif command is "X"
-            *   keepGoing = false
     
     printCard()
     *   call and save results for getIntegerInput for amount of cards
@@ -149,7 +182,81 @@
 
 ###Deck
 
+    __init__(limit=len(KINGDOMCARDDECK)
+
+    class varibles for deck, limit, index
+
+    getLimit()
+    *   return limit
+    
+    getSlots()
+    *   print message
+    *   return limit - length of deck
+
+    getSize()
+    *   return length of deck
+
+    addCard( index: int )
+    *   add Card( index ) to deck
+
+    shuffle()
+    *   use random to shuffle deck
+
+    sortTitle()
+    bubble sort by title
+
+    sortEdition()
+    bubble sort by edition
+
+    searchDeckEdition( deck: list, key: string ) 
+    *   iterate through deck
+        *   check if edition matches key
+            *   add to self.deck
+
+    searchDeckCost( deck: list, key: string )
+    *   iterate through deck
+        *   check if cost matches key
+            *   add to self.deck
+
+    searchDeckType( deck: list, key: string )
+    *   iterate through deck
+        *   check if type contains key
+            *   add to self.deck
+
+    searchDeckTitles( key: string )
+    *   call sortTitle
+    *   binarysearch for key
+
+    draw()
+    *   return Card.getID()
+
+    pull( index: int ) 
+    *   return deck.pop(Card.getID())
+
+    printDeck()
+    *   iterate through deck
+        *   print card
+
+    __str__()
+    *   make empty string
+    *   iterate through deck
+        *   add card repr to string
+    *   return string
+
+    __iter__()
+    *   set index to 0
+    *   return self
+
+    __next__()
+    *   if index < length of deck
+        *   save index from deck
+        *   increase index by 1
+        *   return item
+    *   else
+        *   raise StopIteration
+
 ###Card
+
 
 
 ## Phase 3: Implementation

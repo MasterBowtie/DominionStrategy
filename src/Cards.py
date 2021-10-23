@@ -1,4 +1,4 @@
-from DominionDecks import GAMEEDITIONS, KINGDOMCARDDECK, CARDTYPE
+from KingdomCards import GAMEEDITIONS, KINGDOMCARDDECK, CARDTYPE
 
 
 class Card:
@@ -15,7 +15,7 @@ class Card:
         return KINGDOMCARDDECK[self.__id][1]
 
     def getEdition(self):
-        return KINGDOMCARDDECK[self.__id][3]
+        return KINGDOMCARDDECK[self.__id].index(self.getEditionName())
 
     def getEditionName(self):
         return KINGDOMCARDDECK[self.__id][3]

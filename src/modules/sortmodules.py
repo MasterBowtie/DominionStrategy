@@ -31,10 +31,11 @@ class Sort:
 
     def bubbleSort(self):
         didSwap = True
+        sortCount = 1
 
         while didSwap == True:
             didSwap = False
-            sortCount = 1
+
 
             for i in range(len(self.__list) - sortCount):
                 if self.__list[i] > self.__list[i + 1]:

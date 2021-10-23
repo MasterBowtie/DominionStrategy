@@ -1,4 +1,4 @@
-from DominionDecks import KINGDOMCARDDECK, COST , CARDTYPE, GAMEEDITIONS
+from KingdomCards import KINGDOMCARDDECK, COST , CARDTYPE, GAMEEDITIONS
 from Cards import Card
 from random import shuffle
 
@@ -25,6 +25,7 @@ class Deck:
         shuffle(self.__deck)
 
     def sortTitle(self):
+        #TODO: BubbleSort
         didSwap = True
         sortCount = 1
 
@@ -40,6 +41,7 @@ class Deck:
         return
 
     def sortEdition(self):
+        # TODO: BubbleSort
         didSwap = True
         sortCount = 1
 
