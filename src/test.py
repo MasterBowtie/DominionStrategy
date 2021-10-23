@@ -1,26 +1,20 @@
-import random
+class Test:
+    def __init__(self):
+        self.deck = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+        self.a = 0
 
-def sort(list):
-    for j in range(len(list)):
-        for i in range(len(list)):
-            if list[j] < list[i]:
-                temp = list[j]
-                list[j] = list[i]
-                list[i] = temp
+    def __iter__(self):
+        return self
 
-
-def main():
-    userInput = "y"
-    while userInput.isdigit() == False:
-        try:
-            userInput = input("Give me a number: ")
-            if eval(userInput) > 10:
-                print("This is greater than 10")
-            else:
-                print("This is less than 10")
-        except (NameError):
-            userInput = "y"
+    def __next__(self):
+        if self.a < len(self.deck):
+            x = self.deck[self.a]
+            self.a += 1
+            return x
+        else:
+            raise StopIteration
 
 
-
-main()
+testObject = Test()
+for item in testObject:
+    print(item)
