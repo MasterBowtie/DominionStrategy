@@ -15,15 +15,11 @@ class Menu:
             self.__optionCount += 1
 
     def __isValidCommand(self, command):
-
         isValid = False
-        if command == "X":
-            isValid = True
-        else:
-            for i in range(self.getOptionCount()):
-                if command == self.getOption(i).getCommand():
-                    isValid = True
-                    break
+        for i in range(self.getOptionCount()):
+            if command == self.getOption(i).getCommand():
+                isValid = True
+                break
         return isValid
 
     def getOption(self, optionIndex):
@@ -49,15 +45,17 @@ class Menu:
 
             for i in range(self.getOptionCount()):
                 option = self.getOption(i)
-                if option is not None:
-                    print(f"{option.getCommand()} - {option.getDescription}")
-                    optionList += option.getCommand + ", "
+                if option is not None and i == self.getOptionCount() - 1:
+                    print(f"{option.getCommand()} - {option.getDescription()}")
+                    optionList += option.getCommand()
+                elif option is not None:
+                    print(f"{option.getCommand()} - {option.getDescription()}")
+                    optionList += option.getCommand() + ", "
 
-            print("X - Exit")
-            optionList += "X"
 
             print(f"\nEnter a {self.getHeader()} command ({optionList})")
             command = input()
-            keepGoing = not self.__isValidCommand(command)
+            keepGoing = not self.isValidCommand(command)
 
         return command
+

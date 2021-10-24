@@ -23,7 +23,6 @@ GAMEEDITIONS = ["Dominion",
 
 COST = ["Potion", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten"]
 
-text = open("Dominion Cards.txt", "r")
 KINGDOMCARDDECK = [['Title', 'Cost', 'Type', 'Edition'],
                    ['Cellar', '[Two]', '[Action]', 'Dominion'],
                    ['Chapel', '[Two]', '[Action]', 'Dominion'],
