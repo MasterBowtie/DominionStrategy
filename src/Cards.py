@@ -15,10 +15,10 @@ class Card:
         return KINGDOMCARDDECK[self.__id][0]
 
     def getCost(self):
-        return KINGDOMCARDDECK[self.__id][1]
+        return KINGDOMCARDDECK[self.__id][1].strip('[]')
 
     def getEdition(self):
-        return KINGDOMCARDDECK[self.__id].index(self.getEditionName())
+        return GAMEEDITIONS.index(self.getEditionName())
 
     def getEditionName(self):
         return KINGDOMCARDDECK[self.__id][3]
