@@ -24,7 +24,7 @@ class Card:
         return KINGDOMCARDDECK[self.__id][3]
 
     def getType(self):
-        return KINGDOMCARDDECK[self.__id][2]
+        return KINGDOMCARDDECK[self.__id][2].strip('[]')
 
     def __str__(self):
         return self.getTitle() + " from " + self.getEditionName()

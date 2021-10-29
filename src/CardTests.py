@@ -1,10 +1,12 @@
 from Cards import Card
+from Deck import Deck
 import unittest
 
 class CardTests(unittest.TestCase):
     def test_getID(self):
         for i in range(len(CardList)):
             self.assertEqual(TESTLISTID[i], CardList[i].getID(), "Card ID")
+
 
     def test_getEdition(self):
         self.assertEqual(CardList[0].getEdition(), 0, "getEdition: Moat: 0")
@@ -63,7 +65,43 @@ class CardTests(unittest.TestCase):
         self.assertEqual(CardList[28].getEditionName(), "Menagerie", "getEditionName: Animal Fair: 17")
 
     def test_getType(self):
-        pass
+        self.assertEqual(CardList[2].getType(), "Action", "Chancellor: Action")
+        self.assertEqual(CardList[0].getType(), "Reaction", "Moat: Reaction")
+        self.assertEqual(CardList[1].getType(), "Attack", "Bandit: Attack")
+        self.assertEqual(CardList[6].getType(), "Duration", "Caravan: Duration")
+        self.assertEqual(CardList[3].getType(), "Victory/Treasure", "Harem: Victory/Treasure")
+
+    def test_String(self):
+        for i in TESTLISTID:
+            testCard = Card(i)
+            msg = f"{testCard.getTitle()} from {testCard.getEditionName()}"
+            testmsg = testCard.__str__()
+            self.assertEqual(testmsg, msg)
+
+    def test_Repr(self):
+        for i in TESTLISTID:
+            testCard = Card(i)
+            msg = f"{testCard.getTitle()} from {testCard.getEditionName()}\n\tCosts: {testCard.getCost()}\n\tType: {testCard.getType()}"
+            testmsg = testCard.__repr__()
+            self.assertEqual(testmsg, msg)
+
+
+
+class DeckTests(unittest.TestCase):
+    def test_getLimit(self):
+        for i in range(10, 1000, 10):
+            msg = f"Testing Deck Limit: {i}"
+            testDeck = Deck(i)
+            self.assertEqual(testDeck.getLimit(), i , msg)
+
+    def test_getSlots(self):
+        for i in range(10, 100, 10):
+            testDeck = Deck(i)
+            for j in range(10):
+                msg = f"Testing Deck Slots: {i} - {j} = {i - j}"
+                testDeck.addCard(j)
+                self.assertEqual(testDeck.getSlots(), (i - (j + 1)), msg)
+
 
 
 TESTLISTID = [3,    # 0['Moat', '[Two]', '[Reaction]', 'Dominion']
@@ -100,6 +138,3 @@ TESTLISTID = [3,    # 0['Moat', '[Two]', '[Reaction]', 'Dominion']
 CardList = []
 for i in TESTLISTID:
     CardList.append(Card(i))
-
-if __name__ == '__main__':
-    CardTests().test_getID()
