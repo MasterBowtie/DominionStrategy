@@ -4,7 +4,7 @@ from random import shuffle
 
 
 class Deck:
-    def __init__(self, limit=len(KINGDOMCARDDECK)):
+    def __init__(self, limit=None):
         self.__deck = []
         self.__limit = limit
         self.__index = 0
@@ -13,14 +13,21 @@ class Deck:
         return self.__limit
 
     def getSlots(self):
+        if self.__limit == None:
+            return None
         # print("You have " + str(self.__limit - len(self.__deck)) + " cards left")
-        return self.__limit - len(self.__deck)
+        else:
+            return self.__limit - len(self.__deck)
 
     def getSize(self):
         return len(self.__deck)
 
     def addCard(self, index):
-        self.__deck.append(Card(index))
+        if 0 <= index < len(KINGDOMCARDDECK):
+            self.__deck.append(Card(index))
+            return True
+        else:
+            return False
 
     def shuffle(self):
         shuffle(self.__deck)
@@ -38,9 +45,8 @@ class Deck:
                     didSwap = True
             sortCount += 1
 
-        return
-
     def sortEdition(self):
+        self.sortTitle()
         didSwap = True
         sortCount = 1
 
@@ -52,11 +58,10 @@ class Deck:
                     self.__deck[i], self.__deck[i + 1] = self.__deck[i + 1], self.__deck[i]
                     didSwap = True
             sortCount += 1
-        return
 
     def searchDeckEdition(self, deck, key):
         for i in range(len(self.__deck)):
-            if self.__deck[i].getEditionName() == key:
+            if key in self.__deck[i].getEditionName():
                 deck.append(self.__deck[i])
 
     def searchDeckCost(self, deck, key):

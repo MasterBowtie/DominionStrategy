@@ -1,5 +1,6 @@
 from Cards import Card
 from Deck import Deck
+import KingdomCards
 import unittest
 
 class CardTests(unittest.TestCase):
@@ -85,6 +86,21 @@ class CardTests(unittest.TestCase):
             testmsg = testCard.__repr__()
             self.assertEqual(testmsg, msg)
 
+    def test_GreaterThan(self):
+        testCard1 = Card(3)
+        testCard2 = Card(49)
+        testCard3 = Card(23)
+        self.assertGreater(testCard1, testCard2, "Moat > Harem")
+        self.assertGreater(testCard1, testCard2, "Moat > Bandit")
+        self.assertGreater(testCard2, testCard3, "Harem > Bandit")
+
+    def test_GreaterEqualTo(self):
+        testCard1 = Card(3)
+        testCard2 = Card(49)
+        testCard3 = Card(23)
+        self.assertGreaterEqual(testCard2, testCard1, "Intrigue > Dominion")
+        self.assertGreaterEqual(testCard3, testCard1, "Dominion 2nd > Dominion")
+        self.assertGreaterEqual(testCard2, testCard3, "Intrigue > Dominion 2nd")
 
 
 class DeckTests(unittest.TestCase):
@@ -93,16 +109,93 @@ class DeckTests(unittest.TestCase):
             msg = f"Testing Deck Limit: {i}"
             testDeck = Deck(i)
             self.assertEqual(testDeck.getLimit(), i , msg)
+        testDeck = Deck()
+        self.assertEqual(testDeck.getLimit(), None , "Limit of default")
 
     def test_getSlots(self):
         for i in range(10, 100, 10):
             testDeck = Deck(i)
             for j in range(10):
-                msg = f"Testing Deck Slots: {i} - {j} = {i - j}"
+                msg = f"Testing Deck Slots: {i} - {j + 1} = {i - j + 1}"
                 testDeck.addCard(j)
                 self.assertEqual(testDeck.getSlots(), (i - (j + 1)), msg)
+        testDeck = Deck()
+        self.assertEqual(testDeck.getSlots(), None, "Test slot of Default")
 
+    def test_getSize(self):
+        for i in range(10, 100, 10):
+            testDeck = Deck(i)
+            for j in range(10):
+                msg = f"Testing Deck Size: {j + 1}"
+                testDeck.addCard(j)
+                self.assertEqual(testDeck.getSize(), (j + 1), msg)
 
+    def test_addCard(self):
+        testDeck = Deck()
+        for i in range(-100, 400):
+            if -1 < i < 360:
+                self.assertTrue(testDeck.addCard(i), f"{i} is not in range of Cards")
+            else:
+                self.assertFalse(testDeck.addCard(i), f"{i} is in range of Cards")
+
+    def test_Shuffle(self):
+        testDeck = Deck()
+        testDeckShuffled = Deck()
+        for i in range(10):
+            testDeck.addCard(i)
+            testDeckShuffled.addCard(i)
+        for i in range(10):
+            self.assertEqual(testDeck.draw(), testDeckShuffled.draw(), "Same decks")
+        for i in range(10):
+            testDeck.addCard(i)
+            testDeckShuffled.addCard(i)
+        testDeckShuffled.shuffle()
+        testList = []
+        testShuffled = []
+        for i in range(10):
+            testList.append(testDeck.draw())
+            testShuffled.append(testDeckShuffled.draw())
+        self.assertNotEqual(testList, testShuffled, "Shuffled")
+
+    def test_Draw(self):
+        testDeck = Deck()
+        for i in range(10):
+            testDeck.addCard(i)
+        for i in range(9, -1, -1):
+            self.assertEqual(testDeck.draw(), i, "Draw Cards")
+
+    def test_Pull(self):
+        testDeck = Deck()
+        for i in range(10):
+            testDeck.addCard(i)
+        i = 0
+        while testDeck.getSize() != 0:
+            self.assertEqual(testDeck.pull(0), i, "pulling index")
+            i += 1
+
+    def test_SortTitle(self):
+        testDeck = Deck()
+        for i in TESTLISTID:
+            testDeck.addCard(i)
+        testDeck.sortTitle()
+        self.assertEqual(testDeck.pull(0), 95, "Test Title Sort")
+        self.assertEqual(testDeck.draw(), 133, "Test Title Sort")
+
+    def test_SortEdition(self):
+        testDeck = Deck()
+        for i in TESTLISTID:
+            testDeck.addCard(i)
+        testDeck.shuffle()
+        testDeck.sortEdition()
+        self.assertEqual(testDeck.pull(0), 3, "Test Edition Sort")
+        self.assertEqual(testDeck.draw(), 357, "Test Edition Sort")
+        self.assertEqual(testDeck.draw(), 359, "Test Edition Sort")
+        self.assertEqual(testDeck.draw(), 318, "Test Edition Sort")
+        self.assertEqual(testDeck.draw(), 276, "Test Edition Sort")
+        self.assertEqual(testDeck.draw(), 281, "Test Edition Sort")
+
+    def test_SearchDeckEdition(self):
+        pass
 
 TESTLISTID = [3,    # 0['Moat', '[Two]', '[Reaction]', 'Dominion']
               23,   # 1['Bandit', '[Four]', '[Attack]', 'Dominion 2nd Edition']
