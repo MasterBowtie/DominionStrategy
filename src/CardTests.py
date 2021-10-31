@@ -5,8 +5,10 @@ import unittest
 
 class CardTests(unittest.TestCase):
     def test_getID(self):
-        for i in range(len(CardList)):
+        for i in range(len(CardList) - 2):
             self.assertEqual(TESTLISTID[i], CardList[i].getID(), "Card ID")
+        self.assertEqual(CardList[-1].getID(), None, "Test invalid Card")
+        self.assertEqual(CardList[-2].getID(), None, "Test invalid Card")
 
 
     def test_getEdition(self):
@@ -75,32 +77,46 @@ class CardTests(unittest.TestCase):
     def test_String(self):
         for i in TESTLISTID:
             testCard = Card(i)
-            msg = f"{testCard.getTitle()} from {testCard.getEditionName()}"
-            testmsg = testCard.__str__()
-            self.assertEqual(testmsg, msg)
+            if testCard.getID() is None:
+                self.assertEqual(testCard.__repr__(), "Card does not exist", "Invalid Card")
+            else:
+                msg = f"{testCard.getTitle()} from {testCard.getEditionName()}"
+                testmsg = testCard.__str__()
+                self.assertEqual(testmsg, msg)
 
     def test_Repr(self):
         for i in TESTLISTID:
             testCard = Card(i)
-            msg = f"{testCard.getTitle()} from {testCard.getEditionName()}\n\tCosts: {testCard.getCost()}\n\tType: {testCard.getType()}"
-            testmsg = testCard.__repr__()
-            self.assertEqual(testmsg, msg)
+            if testCard.getID() is None:
+                self.assertEqual(testCard.__repr__(), "Card does not exist", "Invalid Card")
+            else:
+                msg = f"{testCard.getTitle()} from {testCard.getEditionName()}\n\tCosts: {testCard.getCost()}\n\tType: {testCard.getType()}"
+                testmsg = testCard.__repr__()
+                self.assertEqual(testmsg, msg)
 
     def test_GreaterThan(self):
         testCard1 = Card(3)
         testCard2 = Card(49)
         testCard3 = Card(23)
+        testCard4 = Card(400)
+        testCard5 = Card(-1)
         self.assertGreater(testCard1, testCard2, "Moat > Harem")
         self.assertGreater(testCard1, testCard2, "Moat > Bandit")
         self.assertGreater(testCard2, testCard3, "Harem > Bandit")
+        self.assertGreater(testCard1, testCard4, "Moat > None")
+        self.assertGreater(testCard1, testCard5, "Moat > None")
 
     def test_GreaterEqualTo(self):
         testCard1 = Card(3)
         testCard2 = Card(49)
         testCard3 = Card(23)
+        testCard4 = Card(400)
+        testCard5 = Card(-1)
         self.assertGreaterEqual(testCard2, testCard1, "Intrigue > Dominion")
         self.assertGreaterEqual(testCard3, testCard1, "Dominion 2nd > Dominion")
         self.assertGreaterEqual(testCard2, testCard3, "Intrigue > Dominion 2nd")
+        self.assertGreaterEqual(testCard1, testCard4, "Dominion > None")
+        self.assertGreaterEqual(testCard1, testCard5, "Dominion > None")
 
 
 class DeckTests(unittest.TestCase):
@@ -226,7 +242,9 @@ TESTLISTID = [3,    # 0['Moat', '[Two]', '[Reaction]', 'Dominion']
               133,  # 26['Young Witch', '[Four]', '[Attack]', 'Cornucopia']
               357,  # 27['Destrier', '[Six]', '[Action]', 'Menagerie']
               359,  # 28['Animal Fair', '[Seven]', '[Action]', 'Menagerie']
-              165]  # 29['Poor House', '[One]', '[Action]', 'Dark Ages']
+              165,  # 29['Poor House', '[One]', '[Action]', 'Dark Ages']
+              400,
+              -1]
 
 CardList = []
 for i in TESTLISTID:
