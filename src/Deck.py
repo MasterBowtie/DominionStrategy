@@ -1,3 +1,5 @@
+import sys
+
 from KingdomCards import KINGDOMCARDDECK, COST , CARDTYPE, GAMEEDITIONS
 from Cards import Card
 from random import shuffle
@@ -60,50 +62,56 @@ class Deck:
             sortCount += 1
 
     def searchDeckEdition(self, deck, key):
-        for i in range(len(self.__deck)):
-            if key in self.__deck[i].getEditionName():
-                deck.append(self.__deck[i])
+        for i in self.__deck:
+            if key in i.getEditionName():
+                deck.addCard(i.getID())
 
     def searchDeckCost(self, deck, key):
-        for i in range(len(self.__deck)):
-            if self.__deck[i].getCost().find(COST[key]):
-                deck.append(self.__deck[i])
+        for i in self.__deck:
+            if key in i.getCost():
+                deck.addCard(i.getID())
 
     def searchDeckType(self, deck, key):
-        for i in range(len(self.__deck)):
-            if self.__deck[i].getType().find(CARDTYPE[key]):
-                deck.append(self.__deck[i])
+        for i in self.__deck:
+            if key in i.getType():
+                deck.addCard(i.getID())
 
 
     def searchDeckTitles(self, key):
         self.sortTitle()
-        key = key.lower()
         found = False
         low = 0
         high = len(self.__deck) - 1
         while found == False and low <= high:
             mid = (low + high) // 2
-            if self.__deck[mid].getTitle().lower() == key:
+            if self.__deck[mid].getTitle() == key:
                 found = True
                 return found, mid
-            elif key < self.__deck[mid].getTitle().lower():
+            elif key < self.__deck[mid].getTitle():
                 high = mid - 1
-            elif key > self.__deck[mid].getTitle().lower():
+            elif key > self.__deck[mid].getTitle():
                 low = mid + 1
             else:
                 print("Oops")
         print("Card not found")
+        mid = -1
         return found, mid
 
     def draw(self):
         return self.__deck.pop().getID()
 
     def pull(self, index):
-        return self.__deck.pop(index).getID()
+        if 0 <= index < len(self.__deck):
+            return self.__deck.pop(index).getID()
+        else:
+            return index
 
-    def printDeck(self):
+    def printDeck(self, file=sys.stdout):
+        msg = ""
         for card in self.__deck:
-            print(card)
+            msg += str(card) + "\n"
+        print(msg, file=file)
+        return msg
 
     def __str__(self):
         msg = ""

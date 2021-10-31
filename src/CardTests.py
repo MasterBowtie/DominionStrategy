@@ -90,7 +90,7 @@ class CardTests(unittest.TestCase):
             if testCard.getID() is None:
                 self.assertEqual(testCard.__repr__(), "Card does not exist", "Invalid Card")
             else:
-                msg = f"{testCard.getTitle()} from {testCard.getEditionName()}\n\tCosts: {testCard.getCost()}\n\tType: {testCard.getType()}"
+                msg = f"{testCard.getTitle()} from {testCard.getEditionName()}\n\tCost: {testCard.getCost()}\n\tType: {testCard.getType()}\n"
                 testmsg = testCard.__repr__()
                 self.assertEqual(testmsg, msg)
 
@@ -211,7 +211,90 @@ class DeckTests(unittest.TestCase):
         self.assertEqual(testDeck.draw(), 281, "Test Edition Sort")
 
     def test_SearchDeckEdition(self):
-        pass
+        print("\nSearch Edition Test\n")
+        trimmedDeck = Deck()
+        TestDeck.searchDeckEdition(trimmedDeck, "Dominion")
+        for i in trimmedDeck:
+            self.assertTrue("Dominion" in i.getEditionName(), str(i))
+        print("\tSearched Dominion:")
+        trimmedDeck.printDeck()
+        print("\n\tSearched Intrigue 1st Edition:")
+        trimmedDeck = Deck()
+        TestDeck.searchDeckEdition(trimmedDeck, "Intrigue 1st Edition")
+        for i in trimmedDeck:
+            self.assertTrue("Intrigue 1st Edition" in i.getEditionName(), str(i))
+        trimmedDeck.printDeck()
+        print("\n\tSearched Fantastic:")
+        trimmedDeck = Deck()
+        TestDeck.searchDeckEdition(trimmedDeck, "Fantastic")
+        self.assertTrue(trimmedDeck.getSize() == 0)
+        trimmedDeck.printDeck()
+
+    def test_SearchDeckCost(self):
+        print("\nSearch Deck Cost\n")
+        trimmedDeck = Deck()
+        TestDeck.searchDeckCost(trimmedDeck, "Three")
+        for i in trimmedDeck:
+            self.assertTrue("Three" in i.getCost(), i.__repr__)
+        print("\tSearched Three:")
+        trimmedDeck.printDeck()
+        trimmedDeck = Deck()
+        TestDeck.searchDeckCost(trimmedDeck, "Potion")
+        for i in trimmedDeck:
+            self.assertTrue("Potion" in i.getCost(), i.__repr__)
+        print("\n\tSearched Potion:")
+        trimmedDeck.printDeck()
+        trimmedDeck = Deck()
+        TestDeck.searchDeckCost(trimmedDeck, "Ten")
+        self.assertTrue(trimmedDeck.getSize() == 0)
+
+    def test_SearchDeckType(self):
+        print("\nSearch Deck Type")
+        trimmedDeck = Deck()
+        TestDeck.searchDeckType(trimmedDeck, "Attack")
+        for i in trimmedDeck:
+            self.assertTrue("Attack" in i.getType(), i.__repr__)
+        print("\n\tSearched Attack:")
+        trimmedDeck.printDeck()
+        trimmedDeck = Deck()
+        TestDeck.searchDeckType(trimmedDeck,"Treasure")
+        for i in trimmedDeck:
+            self.assertTrue("Treasure" in i.getType(), i.__repr__)
+        print("\n\tSearched Treasure:")
+        trimmedDeck.printDeck()
+        trimmedDeck = Deck()
+        TestDeck.searchDeckType(trimmedDeck,"Altruistic")
+        self.assertTrue(trimmedDeck.getSize() == 0)
+
+    def test_SearchDeckTitle(self):
+        cardFound, index = TestDeck.searchDeckTitles("Bandit")
+        self.assertTrue(cardFound)
+        testCard = Card(TestDeck.pull(index))
+        self.assertEqual(testCard.getTitle(), "Bandit")
+        cardFound, index = TestDeck.searchDeckTitles("Young Witch")
+        self.assertTrue(cardFound)
+        testCard = Card(TestDeck.pull(index))
+        self.assertEqual(testCard.getTitle(), "Young Witch")
+        cardFound, index = TestDeck.searchDeckTitles("Cody")
+        self.assertFalse(cardFound)
+        testCard = Card(TestDeck.pull(index))
+        self.assertIsNone(testCard.getID())
+
+    def test_PrintingDeck(self):
+        print("\nTesting Printing Deck")
+        trimmed = Deck()
+        for i in range(3):
+            trimmed.addCard(TestDeck.draw())
+        trimmed.printDeck()
+        print("\nTesting str(deck)")
+        print(trimmed)
+
+    def test_DeckIteration(self):
+        msg = ""
+        for i in TestDeck:
+            msg += str(i) + "\n"
+        msgTest = TestDeck.printDeck()
+        self.assertEqual(msg, msgTest)
 
 TESTLISTID = [3,    # 0['Moat', '[Two]', '[Reaction]', 'Dominion']
               23,   # 1['Bandit', '[Four]', '[Attack]', 'Dominion 2nd Edition']
@@ -249,3 +332,6 @@ TESTLISTID = [3,    # 0['Moat', '[Two]', '[Reaction]', 'Dominion']
 CardList = []
 for i in TESTLISTID:
     CardList.append(Card(i))
+TestDeck = Deck()
+for i in TESTLISTID:
+    TestDeck.addCard(i)

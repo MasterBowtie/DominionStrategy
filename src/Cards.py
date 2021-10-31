@@ -45,7 +45,7 @@ class Card:
     def __repr__(self):
         if self.__id == None:
             return "Card does not exist"
-        return self.getTitle() + " from " + self.getEditionName() + "\n\tCosts: " + self.getCost() + "\n\tType: " + self.getType()
+        return self.getTitle() + " from " + self.getEditionName() + "\n\tCost: " + self.getCost() + "\n\tType: " + self.getType() + "\n"
 
     def __gt__(self, other):
         if self.__id is None:
