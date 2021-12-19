@@ -12,9 +12,9 @@ class Card:
     def getID(self):
         return self.__id
 
-    def getElement(self):
+    def get(self, index):
         if self.__id is not None:
-            return KINGDOMCARDDECK[self.__id]
+            return KINGDOMCARDDECK[self.__id][index]
 
 
     def getTitle(self):

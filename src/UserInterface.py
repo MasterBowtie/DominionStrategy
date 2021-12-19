@@ -2,45 +2,14 @@ import Deck, Cards, KingdomCards, Menu
 
 
 class UserInterface:
-
     def __init__(self):
         self.__Deck = Deck.Deck()
         self.__playDeck = Deck.Deck(10)
         self.__trimDeck = Deck.Deck()
-        self.__editionList = [
-            "Edition List",
-            "Dominion",
-            "\t1.1 - 1st Edition",
-            "\t1.2 - 2nd Edition",
-            "Intrigue",
-            "\t2.1 - 1st Edition",
-            "\t2.2 - 2nd Edition",
-            "3 - Seaside",
-            "4 - Alchemy",
-            "5 - Prosperity",
-            "6 - Cornucopia",
-            "7 - Hinterlands",
-            "8 - Dark Ages",
-            "9 - Guilds",
-            "10 - Adventures",
-            "11 - Empires",
-            "12 - Nocturne",
-            "13 - Renaissance",
-            "14 - Menagerie"
-        ]
-
 
     def run(self):
-
-        print("What editions are you playing with?")
-        msg = ""
-        for i in self.__editionList:
-            msg += i + "\n"
-        msg += "D - Done with selection\n"
-        msg += "R - Restart selection\n"
-        msg += "P - Print current selection\n"
-        msg += "X - Exit\n"
-        print(msg)
+        menu = Menu.EditionMenu()
+        menu.show()
         keepGoing = True
         editionList = []
         while keepGoing:
@@ -69,6 +38,7 @@ class UserInterface:
             elif userInput == "D":
                 self.__BuildDeck(editionList)
                 self.__EditDeck()
+                menu.show()
             elif userInput == "R":
                 editionList = []
             elif userInput == "P":
@@ -85,7 +55,7 @@ class UserInterface:
                     self.__Deck.addCard(j)
 
     def __EditDeck(self):
-        print("Welcome to the Edit Menu")
+        print("\nWelcome to the Edit Menu")
         menu = Menu.Menu("Edit")
         menu.addOption("D", "Shuffle and draw cards")
         menu.addOption("S", "Save a specific card to play with")
@@ -152,7 +122,25 @@ class UserInterface:
 
     def __SaveCard(self):
         # TODO
-        pass
+        print("Do you know the name of the Card (Y/N)?")
+        userInput = input("Command: ")
+        isValid = False
+        while not isValid:
+            if userInput.lower() == "y":
+                isValid = True
+                found = False
+                while not found:
+                    userInput = input("What is the name of the card: ")
+                    found, index = self.__Deck.searchDeckTitles(userInput)
+                    if not found:
+                        print("Your card was not found")
+                        self.__SaveCard()
+                    self.__playDeck.addCard(index)
+            elif userInput.lower() == "n":
+                isValid = True
+                self.__TrimMenu()
+            elif userInput.lower() == "x":
+                isValid = True
 
     def __RemoveCard(self):
         # TODO
