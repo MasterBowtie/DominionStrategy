@@ -97,6 +97,6 @@ class Menu:
             print(")")
 
             command = input("Command: ")
-            keepGoing = not self.__isValidCommand(command)
+            keepGoing = not self.__isValidCommand(command.upper())
 
-        return command
+        return command.upper()

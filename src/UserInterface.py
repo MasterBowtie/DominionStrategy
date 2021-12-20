@@ -86,28 +86,28 @@ class UserInterface:
 
         while keepGoing:
             userInput = menu.show()
-            if userInput.upper() == "D":
+            if userInput == "D":
                 self.__DrawDeck()
-            elif userInput.upper() == "S":
+            elif userInput == "S":
                 self.__SaveCard()
-            elif userInput.upper() == "R":
+            elif userInput == "R":
                 self.__RemoveCard()
-            elif userInput.upper() == "E":
+            elif userInput == "E":
                 self.__TrimEdition()
                 self.__ClearTrim()
-            elif userInput.upper() == "C":
+            elif userInput == "C":
                 self.__TrimCost()
                 self.__ClearTrim()
-            elif userInput.upper() == "T":
+            elif userInput == "T":
                 self.__TrimType()
                 self.__ClearTrim()
-            elif userInput.upper() == "M":
+            elif userInput == "M":
                 self.__TrimMenu()
                 self.__ClearTrim()
-            elif userInput.upper() == "P":
+            elif userInput == "P":
                 print("Your current selection: ")
                 self.__playDeck.printDeck()
-            elif userInput.upper() == "X":
+            elif userInput == "X":
                 keepGoing = False
 
     def __ClearTrim(self):
@@ -121,6 +121,14 @@ class UserInterface:
 
     def __TrimMenu(self):
         # TODO
+        print("Welcome to the Trim Menu")
+        menu = Menu.Menu("Trim")
+        menu.addOption("C", "Cost")
+        menu.addOption("T", "Type")
+        menu.addOption("E", "Edition")
+        menu.addOption("P", "Print current selection")
+        menu.addOption("R", "Clear current Selection")
+        menu.addOption("X", "Return to previous menu")
         pass
 
     def __TrimEdition(self):
@@ -136,23 +144,21 @@ class UserInterface:
         pass
 
     def __SaveCard(self):
-        # TODO
-        print("Do you know the name of the Card (Y/N)?")
-        userInput = input("Command: ")
         isValid = False
         while not isValid:
+            print("Do you know the name of the Card (Y/N)?")
+            userInput = input("Command: ")
             if userInput.lower() == "y":
-                isValid = True
                 found = False
                 while not found:
                     userInput = input("What is the name of the card: ")
                     found, index = self.__Deck.searchDeckTitles(userInput)
                     if not found:
                         print("Your card was not found")
-                        self.__SaveCard()
+                        break
+                    isValid = True
                     self.__playDeck.addCard(index)
             elif userInput.lower() == "n":
-                isValid = True
                 self.__TrimMenu()
             elif userInput.lower() == "x":
                 isValid = True
