@@ -2,7 +2,7 @@ import MenuOptions
 
 class EditionMenu:
     def __init__(self):
-        self.__header = "Edition" 
+        self.__header = "Edition"
         options = []
         options.append(MenuOptions.MenuOption("1.1", "1st Edition"))
         options.append(MenuOptions.MenuOption("1.2", "2nd Edition"))
@@ -93,7 +93,7 @@ class Menu:
                 print(f"{self.__options[i].getCommand()} - {self.__options[i].getDescription()}")
             print(f"\nEnter a {self.__header} command (", end=" ")
             for i in range(len(self.__options)):
-                print(f"{self.__options[i].getCommand()} ", end=" ")
+                print(f"{self.__options[i].getCommand()} ", end="")
             print(")")
 
             command = input("Command: ")

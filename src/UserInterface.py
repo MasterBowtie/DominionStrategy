@@ -65,9 +65,6 @@ class UserInterface:
             for edition in KingdomCards.GAMEEDITIONS:
                 if card.getEditionName() == edition and edition not in self.__editionList:
                     self.__editionList.append(edition)
-        print(self.__costList)
-        print(self.__typeList)
-        print(self.__editionList)
 
     def __EditDeck(self):
         print("\nWelcome to the Edit Menu")
@@ -90,25 +87,30 @@ class UserInterface:
                 self.__DrawDeck()
             elif userInput == "S":
                 self.__SaveCard()
-            elif userInput == "R":
-                self.__RemoveCard()
-            elif userInput == "E":
-                self.__TrimEdition()
-                self.__ClearTrim()
-            elif userInput == "C":
-                self.__TrimCost()
-                self.__ClearTrim()
-            elif userInput == "T":
-                self.__TrimType()
-                self.__ClearTrim()
-            elif userInput == "M":
-                self.__TrimMenu()
-                self.__ClearTrim()
             elif userInput == "P":
                 print("Your current selection: ")
                 self.__playDeck.printDeck()
             elif userInput == "X":
                 keepGoing = False
+            elif userInput == "R":
+                self.__RemoveCard()
+            elif userInput == "E":
+                self.__TrimEdition()
+                self.__DrawTrim()
+                self.__ClearTrim()
+            elif userInput == "C":
+                self.__TrimCost()
+                self.__DrawTrim()
+                self.__ClearTrim()
+            elif userInput == "T":
+                self.__TrimType()
+                self.__DrawTrim()
+                self.__ClearTrim()
+            elif userInput == "M":
+                self.__TrimMenu()
+                self.__DrawTrim()
+                self.__ClearTrim()
+
 
     def __ClearTrim(self):
         for i in range(self.__trimDeck.getSize()):
@@ -117,23 +119,76 @@ class UserInterface:
 
     def __DrawDeck(self):
         # TODO
-        pass
+        self.__Deck.shuffle()
+        print(self.__playDeck.getLimit())
+        while self.__playDeck.getSize() < 10:
+            self.__playDeck.addCard(self.__Deck.draw())
+        print("\nThe cards you are playing with\n")
+        self.__playDeck.sortEdition()
+        self.__playDeck.printDeck()
+        exit()
 
     def __TrimMenu(self):
-        # TODO
         print("Welcome to the Trim Menu")
         menu = Menu.Menu("Trim")
         menu.addOption("C", "Cost")
         menu.addOption("T", "Type")
         menu.addOption("E", "Edition")
+        menu.addOption("D", "Draw from selection")
         menu.addOption("P", "Print current selection")
         menu.addOption("R", "Clear current Selection")
         menu.addOption("X", "Return to previous menu")
-        pass
+
+        keepGoing = True
+
+        while keepGoing:
+            userInput = menu.show()
+            if userInput == "C":
+                self.__TrimCost()
+            elif userInput == "T":
+                self.__TrimType()
+            elif userInput == "E":
+                self.__TrimEdition()
+            elif userInput == "D":
+                self.__drawTrim()
+            elif userInput == "P":
+                self.__trimDeck.printDeck()
+            elif userInput == "R":
+                self.__ClearTrim()
+            elif userInput == "X":
+                keepGoing = False
+
+    def __DrawTrim(self):
+        # TODO
+        keepGoing = True
+        self.__trimDeck.shuffle()
+        while keepGoing:
+            userInput = input("How many do you want to draw: ")
+            if userInput.isdigit():
+                keepGoing = False
+                for i in range(int(userInput)):
+                    self.__playDeck.addCard(self.__trimDeck.draw())
+
 
     def __TrimEdition(self):
-        # TODO
-        pass
+        print()
+        menu = Menu.Menu("Edition")
+        for i in range(len(self.__editionList)):
+            menu.addOption(str(i + 1), self.__editionList[i])
+        menu.addOption("X", "Return to previous menu")
+
+        keepGoing = True
+
+        while keepGoing:
+            userInput = menu.show()
+            if userInput == "X":
+                keepGoing = False
+            for i in range(len(self.__editionList)):
+                if userInput == menu.getOption(i).getCommand():
+                    keepGoing = False
+                    for card in self.__Deck:
+                        if card.getEditionName() == menu.getOption(i).getDescription():
+                            self.__trimDeck.addCard(card.getID())
 
     def __TrimCost(self):
         # TODO
@@ -148,7 +203,7 @@ class UserInterface:
         while not isValid:
             print("Do you know the name of the Card (Y/N)?")
             userInput = input("Command: ")
-            if userInput.lower() == "y":
+            if userInput.upper() == "Y":
                 found = False
                 while not found:
                     userInput = input("What is the name of the card: ")
@@ -158,11 +213,30 @@ class UserInterface:
                         break
                     isValid = True
                     self.__playDeck.addCard(index)
-            elif userInput.lower() == "n":
+                    print("\tYour card has been added")
+            elif userInput.upper() == "N":
                 self.__TrimMenu()
-            elif userInput.lower() == "x":
+            elif userInput.upper() == "X":
                 isValid = True
 
     def __RemoveCard(self):
-        # TODO
-        pass
+        isValid = False
+        while not isValid:
+            print("Do you know the name of the Card (Y/N)?")
+            userInput = input("Command: ")
+            if userInput.upper() == "Y":
+                found = False
+                while not found:
+                    userInput = input("What is the name of the card: ")
+                    found, index = self.__Deck.searchDeckTitles(userInput)
+                    if not found:
+                        print("Your card was not found")
+                        break
+                    isValid = True
+                    self.__Deck.pull(index)
+                    print("\tThat card has been removed")
+            elif userInput.upper() == "N":
+                self.__TrimMenu()
+            elif userInput.upper == "X":
+                isValid = True
+
