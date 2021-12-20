@@ -6,6 +6,9 @@ class UserInterface:
         self.__Deck = Deck.Deck()
         self.__playDeck = Deck.Deck(10)
         self.__trimDeck = Deck.Deck()
+        self.__typeList = []
+        self.__costList = []
+        self.__editionList = []
 
     def run(self):
         menu = Menu.EditionMenu()
@@ -14,7 +17,7 @@ class UserInterface:
         editionList = []
         while keepGoing:
             userInput = input("Command: ")
-            if userInput == "X":
+            if userInput.upper() == "X":
                 keepGoing = False
             elif userInput == "1.1" or userInput == "1.2":
                 if "Dominion" not in editionList and not (
@@ -35,24 +38,36 @@ class UserInterface:
             elif userInput.isdigit() and 2 < int(userInput) < 15:
                 if not KingdomCards.GAMEEDITIONS[int(userInput) + 3] in editionList:
                     editionList.append(KingdomCards.GAMEEDITIONS[int(userInput) + 3])
-            elif userInput == "D":
+            elif userInput.upper() == "D":
                 self.__BuildDeck(editionList)
                 self.__EditDeck()
                 menu.show()
-            elif userInput == "R":
+            elif userInput.upper() == "R":
                 editionList = []
-            elif userInput == "P":
+            elif userInput.upper() == "P":
                 print("Your current selection:")
                 for i in editionList:
                     print("\t" + i)
-            else:
-                print(msg)
+
 
     def __BuildDeck(self, editionList):
         for i in range(len(editionList)):
             for j in range(len(KingdomCards.KINGDOMCARDDECK)):
                 if Cards.Card(j).getEditionName() == editionList[i]:
                     self.__Deck.addCard(j)
+        for card in self.__Deck:
+            for cost in KingdomCards.COST:
+                if card.getCost() == cost and cost not in self.__costList:
+                    self.__costList.append(cost)
+            for type in KingdomCards.CARDTYPE:
+                if card.getType() == type and type not in self.__typeList:
+                    self.__typeList.append(type)
+            for edition in KingdomCards.GAMEEDITIONS:
+                if card.getEditionName() == edition and edition not in self.__editionList:
+                    self.__editionList.append(edition)
+        print(self.__costList)
+        print(self.__typeList)
+        print(self.__editionList)
 
     def __EditDeck(self):
         print("\nWelcome to the Edit Menu")
@@ -71,28 +86,28 @@ class UserInterface:
 
         while keepGoing:
             userInput = menu.show()
-            if userInput == "D":
+            if userInput.upper() == "D":
                 self.__DrawDeck()
-            elif userInput == "S":
+            elif userInput.upper() == "S":
                 self.__SaveCard()
-            elif userInput == "R":
+            elif userInput.upper() == "R":
                 self.__RemoveCard()
-            elif userInput == "E":
+            elif userInput.upper() == "E":
                 self.__TrimEdition()
                 self.__ClearTrim()
-            elif userInput == "C":
+            elif userInput.upper() == "C":
                 self.__TrimCost()
                 self.__ClearTrim()
-            elif userInput == "T":
+            elif userInput.upper() == "T":
                 self.__TrimType()
                 self.__ClearTrim()
-            elif userInput == "M":
+            elif userInput.upper() == "M":
                 self.__TrimMenu()
                 self.__ClearTrim()
-            elif userInput == "P":
+            elif userInput.upper() == "P":
                 print("Your current selection: ")
                 self.__playDeck.printDeck()
-            elif userInput == "X":
+            elif userInput.upper() == "X":
                 keepGoing = False
 
     def __ClearTrim(self):
