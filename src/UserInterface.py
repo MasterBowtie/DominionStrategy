@@ -6,9 +6,7 @@ class UserInterface:
         self.__Deck = Deck.Deck()
         self.__playDeck = Deck.Deck(10)
         self.__trimDeck = Deck.Deck()
-        self.__typeList = []
-        self.__costList = []
-        self.__editionList = []
+        self.__attributeList = ["Title", [], [], []]
 
     def run(self):
         menu = Menu.EditionMenu()
@@ -48,23 +46,25 @@ class UserInterface:
                 print("Your current selection:")
                 for i in editionList:
                     print("\t" + i)
+            else:
+                print("Invalid input")
 
 
     def __BuildDeck(self, editionList):
         for i in range(len(editionList)):
             for j in range(len(KingdomCards.KINGDOMCARDDECK)):
                 if Cards.Card(j).getEditionName() == editionList[i]:
-                    self.__Deck.addCard(j)
+                    self.__Deck.addCard(Cards.Card(j))
         for card in self.__Deck:
             for cost in KingdomCards.COST:
-                if card.getCost() == cost and cost not in self.__costList:
-                    self.__costList.append(cost)
+                if card.getCost() == cost and cost not in self.__attributeList[1]:
+                    self.__attributeList[1].append(cost)
             for type in KingdomCards.CARDTYPE:
-                if card.getType() == type and type not in self.__typeList:
-                    self.__typeList.append(type)
+                if card.getType() == type and type not in self.__attributeList[2]:
+                    self.__attributeList[2].append(type)
             for edition in KingdomCards.GAMEEDITIONS:
-                if card.getEditionName() == edition and edition not in self.__editionList:
-                    self.__editionList.append(edition)
+                if card.getEditionName() == edition and edition not in self.__attributeList[3]:
+                    self.__attributeList[3].append(edition)
 
     def __EditDeck(self):
         print("\nWelcome to the Edit Menu")
@@ -88,42 +88,37 @@ class UserInterface:
             elif userInput == "S":
                 self.__SaveCard()
             elif userInput == "P":
-                print("Your current selection: ")
+                print("Your current selection: ", end="")
                 self.__playDeck.printDeck()
             elif userInput == "X":
                 keepGoing = False
             elif userInput == "R":
                 self.__RemoveCard()
             elif userInput == "E":
-                self.__TrimEdition()
-                self.__DrawTrim()
+                self.__Trim(3)
+                self.__drawTrim()
                 self.__ClearTrim()
             elif userInput == "C":
-                self.__TrimCost()
-                self.__DrawTrim()
+                self.__Trim(1)
+                self.__drawTrim()
                 self.__ClearTrim()
             elif userInput == "T":
-                self.__TrimType()
-                self.__DrawTrim()
+                self.__Trim(2)
+                self.__drawTrim()
                 self.__ClearTrim()
             elif userInput == "M":
                 self.__TrimMenu()
-                self.__DrawTrim()
                 self.__ClearTrim()
 
 
     def __ClearTrim(self):
-        for i in range(self.__trimDeck.getSize()):
-            self.__playDeck.addCard(self.__trimDeck.draw())
-            i -= 1
+        self.__trimDeck.clearDeck()
 
     def __DrawDeck(self):
-        # TODO
         self.__Deck.shuffle()
-        print(self.__playDeck.getLimit())
         while self.__playDeck.getSize() < 10:
             self.__playDeck.addCard(self.__Deck.draw())
-        print("\nThe cards you are playing with\n")
+        print("\nThe cards you are playing with")
         self.__playDeck.sortEdition()
         self.__playDeck.printDeck()
         exit()
@@ -144,11 +139,11 @@ class UserInterface:
         while keepGoing:
             userInput = menu.show()
             if userInput == "C":
-                self.__TrimCost()
+                self.__Trim(1)
             elif userInput == "T":
-                self.__TrimType()
+                self.__Trim(2)
             elif userInput == "E":
-                self.__TrimEdition()
+                self.__Trim(3)
             elif userInput == "D":
                 self.__drawTrim()
             elif userInput == "P":
@@ -158,23 +153,25 @@ class UserInterface:
             elif userInput == "X":
                 keepGoing = False
 
-    def __DrawTrim(self):
-        # TODO
+    def __drawTrim(self):
         keepGoing = True
         self.__trimDeck.shuffle()
         while keepGoing:
             userInput = input("How many do you want to draw: ")
-            if userInput.isdigit():
+            if userInput.isdigit() and int(userInput) <= self.__trimDeck.getSize() and int(userInput) <= self.__playDeck.getSlots():
                 keepGoing = False
                 for i in range(int(userInput)):
-                    self.__playDeck.addCard(self.__trimDeck.draw())
+                    card = self.__trimDeck.draw().getTitle()
+                    found, index = self.__Deck.searchDeckTitles(card)
+                    self.__playDeck.addCard(self.__Deck.pull(index))
+            else:
+                print("That is not a valid input")
 
 
-    def __TrimEdition(self):
-        print()
+    def __Trim(self, index):
         menu = Menu.Menu("Edition")
-        for i in range(len(self.__editionList)):
-            menu.addOption(str(i + 1), self.__editionList[i])
+        for i in range(len(self.__attributeList[index])):
+            menu.addOption(str(i + 1), self.__attributeList[index][i])
         menu.addOption("X", "Return to previous menu")
 
         keepGoing = True
@@ -183,20 +180,22 @@ class UserInterface:
             userInput = menu.show()
             if userInput == "X":
                 keepGoing = False
-            for i in range(len(self.__editionList)):
+            for i in range(len(self.__attributeList[index])):
                 if userInput == menu.getOption(i).getCommand():
                     keepGoing = False
-                    for card in self.__Deck:
-                        if card.getEditionName() == menu.getOption(i).getDescription():
-                            self.__trimDeck.addCard(card.getID())
-
-    def __TrimCost(self):
-        # TODO
-        pass
-
-    def __TrimType(self):
-        # TODO
-        pass
+                    if self.__trimDeck.getSize() == 0:
+                        for card in self.__Deck:
+                            if menu.getOption(i).getDescription() in card.get(index):
+                                self.__trimDeck.addCard(card)
+                    #TODO: Add cards that aren't in the deck
+                    else:
+                        trimDeck = []
+                        for card in self.__trimDeck:
+                            if menu.getOption(i).getDescription() in card.get(index):
+                                trimDeck.append(card)
+                        self.__ClearTrim()
+                        for card in trimDeck:
+                            self.__trimDeck.addCard(card)
 
     def __SaveCard(self):
         isValid = False

@@ -19,7 +19,7 @@ class EditionMenu:
         options.append(MenuOptions.MenuOption("11", "Empires"))
         options.append(MenuOptions.MenuOption("12", "Nocturne"))
         options.append(MenuOptions.MenuOption("13", "Renaissance"))
-        options.append(MenuOptions.MenuOption("14", "Menagerië"))
+        options.append(MenuOptions.MenuOption("14", "Menagerie"))
         options.append(MenuOptions.MenuOption("D", "Done with selection"))
         options.append(MenuOptions.MenuOption("R", "Restart selection"))
         options.append(MenuOptions.MenuOption("P", "Print current selection"))

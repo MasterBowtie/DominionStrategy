@@ -24,9 +24,9 @@ class Deck:
     def getSize(self):
         return len(self.__deck)
 
-    def addCard(self, index):
-        if 0 <= index < len(KINGDOMCARDDECK):
-            self.__deck.append(Card(index))
+    def addCard(self, card):
+        if type(card) == Card:
+            self.__deck.append(card)
             return True
         else:
             return False
@@ -98,19 +98,20 @@ class Deck:
         return found, mid
 
     def draw(self):
-        return self.__deck.pop().getID()
+        return self.__deck.pop()
 
     def pull(self, index):
         if 0 <= index < len(self.__deck):
-            return self.__deck.pop(index).getID()
-        else:
-            return index
+            return self.__deck.pop(index)
+
+    def clearDeck(self):
+        self.__deck = []
 
     def printDeck(self, file=sys.stdout):
         msg = ""
         for card in self.__deck:
             msg += str(card) + "\n"
-        print(msg, file=file)
+        print("\n" + msg, file=file)
         return msg
 
     def __str__(self):
