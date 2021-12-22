@@ -1,4 +1,4 @@
-from KingdomCards import GAMEEDITIONS, KINGDOMCARDDECK, CARDTYPE
+from KingdomCards import GAMEEDITIONS, KINGDOMCARDDECK, CARDTYPE, COST
 
 
 class Card:
@@ -62,7 +62,39 @@ class Card:
             return False
         if other.getID() is None:
             return True
-        if self.getEdition() > other.getEdition():
-            return True
-        else:
+        selfIndex = -1
+        otherIndex = -1
+        for i in range(len(GAMEEDITIONS)):
+            if self.getEdition() == GAMEEDITIONS[i]:
+                selfIndex = i
+            if other.getEdition() == GAMEEDITIONS[i]:
+                otherIndex = i
+        return selfIndex > otherIndex
+
+    def __lt__(self, other):
+        if self.__id is None:
             return False
+        if other.getID() is None:
+            return True
+        selfIndex = -1
+        otherIndex = -1
+        for i in range(len(COST)):
+            if COST[i] in self.getCost():
+                selfIndex = i
+            if COST[i] in other.getCost():
+                otherIndex = i
+        return selfIndex > otherIndex
+
+    def __le__(self, other):
+        if self.__id is None:
+            return False
+        if other.getID() is None:
+            return True
+        selfIndex = -1
+        otherIndex = -1
+        for i in range(len(CARDTYPE)):
+            if CARDTYPE[i] in self.getCost():
+                selfIndex = i
+            if CARDTYPE[i] in other.getCost():
+                otherIndex = i
+        return selfIndex > otherIndex

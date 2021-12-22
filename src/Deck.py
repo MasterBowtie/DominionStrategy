@@ -1,6 +1,5 @@
 import sys
 
-from KingdomCards import KINGDOMCARDDECK, COST , CARDTYPE, GAMEEDITIONS
 from Cards import Card
 from random import shuffle
 
@@ -47,6 +46,34 @@ class Deck:
                     didSwap = True
             sortCount += 1
 
+    def sortCost(self):
+        self.sortTitle()
+        didSwap = True
+        sortCount = 1
+
+        while didSwap == True:
+            didSwap = False
+
+            for i in range(len(self.__deck) - sortCount):
+                if self.__deck[i] < self.__deck[i + 1]:
+                    self.__deck[i], self.__deck[i + 1] = self.__deck[i + 1], self.__deck[i]
+                    didSwap = True
+            sortCount += 1
+
+    def sortType(self):
+        self.sortTitle()
+        didSwap = True
+        sortCount = 1
+
+        while didSwap == True:
+            didSwap = False
+
+            for i in range(len(self.__deck) - sortCount):
+                if self.__deck[i] <= self.__deck[i + 1]:
+                    self.__deck[i], self.__deck[i + 1] = self.__deck[i + 1], self.__deck[i]
+                    didSwap = True
+            sortCount += 1
+
     def sortEdition(self):
         self.sortTitle()
         didSwap = True
@@ -61,35 +88,33 @@ class Deck:
                     didSwap = True
             sortCount += 1
 
-    def searchDeckEdition(self, deck, key):
-        for i in self.__deck:
-            if key in i.getEditionName():
-                deck.addCard(i.getID())
+    def sort(self, index):
+        if index == 0:
+            self.sortTitle()
+        elif index == 1:
+            self.sortCost()
+        elif index == 2:
+            self.sortType()
+        elif index == 3:
+            self.sortEdition()
 
-    def searchDeckCost(self, deck, key):
-        for i in self.__deck:
-            if key in i.getCost():
-                deck.addCard(i.getID())
-
-    def searchDeckType(self, deck, key):
-        for i in self.__deck:
-            if key in i.getType():
-                deck.addCard(i.getID())
-
-
-    def searchDeckTitles(self, key):
-        self.sortTitle()
+    #TODO: Check Edition Searching
+    def searchDeck(self, key, index):
+        self.sort(index)
         found = False
         low = 0
         high = len(self.__deck) - 1
         while found == False and low <= high:
             mid = (low + high) // 2
-            if self.__deck[mid].getTitle() == key:
+            if index == 3 and key == self.__deck[mid].get(index):
                 found = True
                 return found, mid
-            elif key < self.__deck[mid].getTitle():
+            elif index != 3 and key in self.__deck[mid].get(index):
+                found = True
+                return found, mid
+            elif key < self.__deck[mid].get(index):
                 high = mid - 1
-            elif key > self.__deck[mid].getTitle():
+            elif key > self.__deck[mid].get(index):
                 low = mid + 1
             else:
                 print("Oops")

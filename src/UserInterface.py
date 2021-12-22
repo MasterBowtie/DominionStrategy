@@ -162,7 +162,7 @@ class UserInterface:
                 keepGoing = False
                 for i in range(int(userInput)):
                     card = self.__trimDeck.draw().getTitle()
-                    found, index = self.__Deck.searchDeckTitles(card)
+                    found, index = self.__Deck.searchDeck(card, 0)
                     self.__playDeck.addCard(self.__Deck.pull(index))
             else:
                 print("That is not a valid input")
@@ -183,19 +183,26 @@ class UserInterface:
             for i in range(len(self.__attributeList[index])):
                 if userInput == menu.getOption(i).getCommand():
                     keepGoing = False
+                    found, location = self.__trimDeck.searchDeck(menu.getOption(i).getDescription(), index)
                     if self.__trimDeck.getSize() == 0:
                         for card in self.__Deck:
                             if menu.getOption(i).getDescription() in card.get(index):
                                 self.__trimDeck.addCard(card)
-                    #TODO: Add cards that aren't in the deck
-                    else:
+                    #TODO: add or remove cards
+                    elif found:
                         trimDeck = []
                         for card in self.__trimDeck:
-                            if menu.getOption(i).getDescription() in card.get(index):
+                            if index == 3 and menu.getOption(i).getDescription() == card.get(index):
+                                trimDeck.append(card)
+                            elif index != 3 and menu.getOption(i).getDescription() in card.get(index):
                                 trimDeck.append(card)
                         self.__ClearTrim()
                         for card in trimDeck:
                             self.__trimDeck.addCard(card)
+                    else:
+                        for card in self.__Deck:
+                            if menu.getOption(i).getDescription() in card.get(index):
+                                self.__trimDeck.addCard(card)
 
     def __SaveCard(self):
         isValid = False
@@ -206,7 +213,7 @@ class UserInterface:
                 found = False
                 while not found:
                     userInput = input("What is the name of the card: ")
-                    found, index = self.__Deck.searchDeckTitles(userInput)
+                    found, index = self.__Deck.searchDeck(userInput, 0)
                     if not found:
                         print("Your card was not found")
                         break
@@ -227,7 +234,7 @@ class UserInterface:
                 found = False
                 while not found:
                     userInput = input("What is the name of the card: ")
-                    found, index = self.__Deck.searchDeckTitles(userInput)
+                    found, index = self.__Deck.searchDeck(userInput, 0)
                     if not found:
                         print("Your card was not found")
                         break
