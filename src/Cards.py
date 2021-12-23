@@ -65,9 +65,9 @@ class Card:
         selfIndex = -1
         otherIndex = -1
         for i in range(len(GAMEEDITIONS)):
-            if self.getEdition() == GAMEEDITIONS[i]:
+            if self.getEditionName() == GAMEEDITIONS[i]:
                 selfIndex = i
-            if other.getEdition() == GAMEEDITIONS[i]:
+            if other.getEditionName() == GAMEEDITIONS[i]:
                 otherIndex = i
         return selfIndex > otherIndex
 

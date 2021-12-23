@@ -47,7 +47,6 @@ class Deck:
             sortCount += 1
 
     def sortCost(self):
-        self.sortTitle()
         didSwap = True
         sortCount = 1
 
@@ -61,7 +60,6 @@ class Deck:
             sortCount += 1
 
     def sortType(self):
-        self.sortTitle()
         didSwap = True
         sortCount = 1
 
@@ -75,7 +73,6 @@ class Deck:
             sortCount += 1
 
     def sortEdition(self):
-        self.sortTitle()
         didSwap = True
         sortCount = 1
 
@@ -98,29 +95,22 @@ class Deck:
         elif index == 3:
             self.sortEdition()
 
-    #TODO: Check Edition Searching
     def searchDeck(self, key, index):
-        self.sort(index)
         found = False
-        low = 0
-        high = len(self.__deck) - 1
-        while found == False and low <= high:
-            mid = (low + high) // 2
-            if index == 3 and key == self.__deck[mid].get(index):
-                found = True
-                return found, mid
-            elif index != 3 and key in self.__deck[mid].get(index):
-                found = True
-                return found, mid
-            elif key < self.__deck[mid].get(index):
-                high = mid - 1
-            elif key > self.__deck[mid].get(index):
-                low = mid + 1
-            else:
-                print("Oops")
-        print("Card not found")
-        mid = -1
-        return found, mid
+        location = -1
+        if (index == 0 or index == 3):
+            for i in range(len(self.__deck)):
+                if self.__deck[i].get(index) == key:
+                    found = True
+                    location = i
+        else:
+            for i in range(len(self.__deck)):
+                if key in self.__deck[i].get(index):
+                    found = True
+                    location = i
+        if location == -1 and index == 0:
+            print("Card not found")
+        return found, location
 
     def draw(self):
         return self.__deck.pop()

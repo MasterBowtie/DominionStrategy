@@ -82,6 +82,8 @@ class UserInterface:
         keepGoing = True
 
         while keepGoing:
+            if self.__playDeck.getSlots() == 0:
+                self.__DrawDeck()
             userInput = menu.show()
             if userInput == "D":
                 self.__DrawDeck()
@@ -119,6 +121,7 @@ class UserInterface:
         while self.__playDeck.getSize() < 10:
             self.__playDeck.addCard(self.__Deck.draw())
         print("\nThe cards you are playing with")
+        self.__playDeck.sortTitle()
         self.__playDeck.sortEdition()
         self.__playDeck.printDeck()
         exit()
@@ -157,7 +160,7 @@ class UserInterface:
         keepGoing = True
         self.__trimDeck.shuffle()
         while keepGoing:
-            userInput = input("How many do you want to draw: ")
+            userInput = input(f"How many do you want to draw ({self.__trimDeck.getSize()}): ")
             if userInput.isdigit() and int(userInput) <= self.__trimDeck.getSize() and int(userInput) <= self.__playDeck.getSlots():
                 keepGoing = False
                 for i in range(int(userInput)):
@@ -188,13 +191,12 @@ class UserInterface:
                         for card in self.__Deck:
                             if menu.getOption(i).getDescription() in card.get(index):
                                 self.__trimDeck.addCard(card)
-                    #TODO: add or remove cards
                     elif found:
                         trimDeck = []
                         for card in self.__trimDeck:
-                            if index == 3 and menu.getOption(i).getDescription() == card.get(index):
+                            if (index == 3 or index == 0) and menu.getOption(i).getDescription() == card.get(index):
                                 trimDeck.append(card)
-                            elif index != 3 and menu.getOption(i).getDescription() in card.get(index):
+                            elif (index == 2 or index == 1) and menu.getOption(i).getDescription() in card.get(index):
                                 trimDeck.append(card)
                         self.__ClearTrim()
                         for card in trimDeck:
