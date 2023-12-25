@@ -1,6 +1,6 @@
-from Deck import Deck
-from Cards import Card
-from DominionDecks import KINGDOMCARDDECK, CARDTYPE, GAMEEDITIONS, COST
+from src.Deck import Deck
+from src.Cards import Card
+from src.KingdomCards import KINGDOMCARDDECK, CARDTYPE, GAMEEDITIONS, COST
 import random
 
 
