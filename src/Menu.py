@@ -1,4 +1,4 @@
-import MenuOptions
+import src.MenuOptions
 
 class EditionMenu:
     def __init__(self):

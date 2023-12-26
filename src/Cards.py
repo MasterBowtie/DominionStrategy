@@ -1,4 +1,4 @@
-from KingdomCards import GAMEEDITIONS, KINGDOMCARDDECK, CARDTYPE, COST
+from src.KingdomCards import GAMEEDITIONS, KINGDOMCARDDECK, CARDTYPE, COST
 
 
 class Card:

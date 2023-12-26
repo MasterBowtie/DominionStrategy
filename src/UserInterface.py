@@ -1,53 +1,71 @@
-import Deck, Cards, KingdomCards, Menu
+import pygame
+from src.Deck import Deck
+from src.Cards import Card
+from src.KingdomCards import KINGDOMCARDDECK, CARDTYPE, COST, GAMEEDITIONS
+from src.Menu import Menu
+from src.main_menu import main_menu
 
 
 class UserInterface:
     def __init__(self):
-        self.__Deck = Deck.Deck()
-        self.__playDeck = Deck.Deck(10)
-        self.__trimDeck = Deck.Deck()
+        self.__Deck = Deck()
+        self.__playDeck = Deck(10)
+        self.__trimDeck = Deck()
         self.__attributeList = ["Title", [], [], []]
 
     def run(self):
-        menu = Menu.EditionMenu()
-        menu.show()
-        keepGoing = True
-        editionList = []
-        while keepGoing:
-            userInput = input("Command: ")
-            if userInput.upper() == "X":
-                keepGoing = False
-            elif userInput == "1.1" or userInput == "1.2":
-                if "Dominion" not in editionList and not (
-                        "Dominion 1st Edition" in editionList or "Dominion 2nd Edition" in editionList):
-                    editionList.append("Dominion")
-                if userInput == "1.2" and not "Dominion 2nd Edition" in editionList:
-                    editionList.append("Dominion 2nd Edition")
-                elif userInput == "1.1" and not "Dominion 1st Edition" in editionList:
-                    editionList.append("Dominion 1st Edition")
-            elif userInput == "2.1" or userInput == "2.2":
-                if "Intrigue" not in editionList and not (
-                        "Intrigue 1st Edition" in editionList or "Intrigue 2nd Edition" in editionList):
-                    editionList.append("Intrigue")
-                if userInput == "2.2" and not "Intrigue 2nd Edition" in editionList:
-                    editionList.append("Intrigue 2nd Edition")
-                elif userInput == "2.1" and not "Intrigue 1st Edition" in editionList:
-                    editionList.append("Intrigue 1st Edition")
-            elif userInput.isdigit() and 2 < int(userInput) < 15:
-                if not KingdomCards.GAMEEDITIONS[int(userInput) + 3] in editionList:
-                    editionList.append(KingdomCards.GAMEEDITIONS[int(userInput) + 3])
-            elif userInput.upper() == "D":
-                self.__BuildDeck(editionList)
-                self.__EditDeck()
-                menu.show()
-            elif userInput.upper() == "R":
-                editionList = []
-            elif userInput.upper() == "P":
-                print("Your current selection:")
-                for i in editionList:
-                    print("\t" + i)
-            else:
-                print("Invalid input")
+        pygame.init()
+        pygame.display.set_mode((720, 540))
+
+        running = True
+
+        while (running):
+            running = main_menu()
+
+
+            for event in pygame.event.get(pygame.QUIT):
+                if event.type == pygame.QUIT:
+                    exit()
+
+    # menu = Menu.EditionMenu()
+        # menu.show()
+        # keepGoing = True
+        # editionList = []
+        # while keepGoing:
+        #     userInput = input("Command: ")
+        #     if userInput.upper() == "X":
+        #         keepGoing = False
+        #     elif userInput == "1.1" or userInput == "1.2":
+        #         if "Dominion" not in editionList and not (
+        #                 "Dominion 1st Edition" in editionList or "Dominion 2nd Edition" in editionList):
+        #             editionList.append("Dominion")
+        #         if userInput == "1.2" and not "Dominion 2nd Edition" in editionList:
+        #             editionList.append("Dominion 2nd Edition")
+        #         elif userInput == "1.1" and not "Dominion 1st Edition" in editionList:
+        #             editionList.append("Dominion 1st Edition")
+        #     elif userInput == "2.1" or userInput == "2.2":
+        #         if "Intrigue" not in editionList and not (
+        #                 "Intrigue 1st Edition" in editionList or "Intrigue 2nd Edition" in editionList):
+        #             editionList.append("Intrigue")
+        #         if userInput == "2.2" and not "Intrigue 2nd Edition" in editionList:
+        #             editionList.append("Intrigue 2nd Edition")
+        #         elif userInput == "2.1" and not "Intrigue 1st Edition" in editionList:
+        #             editionList.append("Intrigue 1st Edition")
+        #     elif userInput.isdigit() and 2 < int(userInput) < 15:
+        #         if not KingdomCards.GAMEEDITIONS[int(userInput) + 3] in editionList:
+        #             editionList.append(KingdomCards.GAMEEDITIONS[int(userInput) + 3])
+        #     elif userInput.upper() == "D":
+        #         self.__BuildDeck(editionList)
+        #         self.__EditDeck()
+        #         menu.show()
+        #     elif userInput.upper() == "R":
+        #         editionList = []
+        #     elif userInput.upper() == "P":
+        #         print("Your current selection:")
+        #         for i in editionList:
+        #             print("\t" + i)
+        #     else:
+        #         print("Invalid input")
 
 
     def __BuildDeck(self, editionList):

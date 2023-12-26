@@ -1,6 +1,6 @@
 import sys
 
-from Cards import Card
+from src.Cards import Card
 from random import shuffle
 
 
