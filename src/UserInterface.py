@@ -19,14 +19,15 @@ class UserInterface:
 
         running = True
         next_menu = 0
+        b_ratio = .35
 
         while (running):
             if next_menu == -1:
                 running = False
             elif next_menu == 0:
-                next_menu = main_menu()
+                next_menu = main_menu(b_ratio)
             elif next_menu == 1:
-                next_menu = selection_menu()
+                next_menu = selection_menu(b_ratio)
 
 
     # menu = Menu.EditionMenu()

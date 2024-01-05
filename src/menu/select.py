@@ -1,6 +1,6 @@
 import pygame
 
-def selection_menu():
+def selection_menu(b_ratio):
     print("This is the selection menu")
 
     screen = pygame.display.get_surface()
@@ -8,6 +8,7 @@ def selection_menu():
     # Loading Images
     background_original = pygame.image.load("images/background.png")
     back_button = [pygame.image.load("images/back_button.png"), pygame.image.load("images/back_button_pressed.png")]
+    back_button = [pygame.transform.scale(back_button[0], (back_button[0].get_size()[0] * b_ratio, back_button[0].get_size()[1] * b_ratio)), pygame.transform.scale(back_button[1], (back_button[0].get_size()[0] * b_ratio, back_button[0].get_size()[1] * b_ratio))]
 
     ratio = (pygame.display.Info().current_w / background_original.get_size()[0], pygame.display.Info().current_h / background_original.get_size()[1])
     background = pygame.transform.scale(background_original, (background_original.get_size()[0] * ratio[0], background_original.get_size()[1] * ratio[1]))

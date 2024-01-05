@@ -1,15 +1,19 @@
 import pygame
 
 
-def main_menu():
+def main_menu(b_ratio):
     screen  = pygame.display.get_surface()
 
     #Loading Images
     background_original = pygame.image.load("images/background.png")
-    title_original  = pygame.image.load("images/dominion_logo.png")
+    title_original = pygame.image.load("images/dominion_logo.png")
     build_button = [pygame.image.load("images/build_button.png"), pygame.image.load("images/build_button_pressed.png")]
     saved_button = [pygame.image.load("images/saved_button.png"), pygame.image.load("images/saved_button_pressed.png")]
     close_button = [pygame.image.load("images/close_button.png"), pygame.image.load("images/close_button_pressed.png")]
+
+    build_button = [pygame.transform.scale(build_button[0], (build_button[0].get_size()[0] * b_ratio, build_button[0].get_size()[1] * b_ratio)), pygame.transform.scale(build_button[1], (build_button[0].get_size()[0] * b_ratio, build_button[0].get_size()[1] * b_ratio))]
+    saved_button = [pygame.transform.scale(saved_button[0], (saved_button[0].get_size()[0] * b_ratio, saved_button[0].get_size()[1] * b_ratio)), pygame.transform.scale(saved_button[1], (saved_button[0].get_size()[0] * b_ratio, saved_button[0].get_size()[1] * b_ratio))]
+    close_button = [pygame.transform.scale(close_button[0], (close_button[0].get_size()[0] * b_ratio, close_button[0].get_size()[1] * b_ratio)), pygame.transform.scale(close_button[1], (close_button[0].get_size()[0] * b_ratio, close_button[0].get_size()[1] * b_ratio))]
 
     running = True
     print("This is the main menu")
@@ -23,6 +27,8 @@ def main_menu():
     ratio = (pygame.display.Info().current_w / background_original.get_size()[0], pygame.display.Info().current_h / background_original.get_size()[1])
     background = pygame.transform.scale(background_original, (background_original.get_size()[0] * ratio[0], background_original.get_size()[1] * ratio[1]))
     scale = pygame.display.Info().current_w * .75 / title_original.get_size()[0]
+    if scale > .5:
+        scale = .5
     title = pygame.transform.scale(title_original, (title_original.get_size()[0] * scale, title_original.get_size()[1] * scale))
 
     title_Rect = title.get_rect()
@@ -40,8 +46,11 @@ def main_menu():
             ratio = (pygame.display.Info().current_w / background_original.get_size()[0], pygame.display.Info().current_h / background_original.get_size()[1])
             background = pygame.transform.scale(background_original, (background_original.get_size()[0] * ratio[0], background_original.get_size()[1] * ratio[1]))
             scale = pygame.display.Info().current_w * .75 / title_original.get_size()[0]
+            if scale > .5:
+                scale = .5
             title = pygame.transform.scale(title_original, (title_original.get_size()[0] * scale, title_original.get_size()[1] * scale))
             title_Rect = title.get_rect()
+            print(scale)
 
         screen.blit(background, (0,0))
 
