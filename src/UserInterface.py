@@ -1,9 +1,8 @@
 import pygame
 from src.Deck import Deck
-from src.Cards import Card
-from src.KingdomCards import KINGDOMCARDDECK, CARDTYPE, COST, GAMEEDITIONS
 from src.Menu import Menu
-from src.main_menu import main_menu
+from src.menu.main_menu import main_menu
+from src.menu.select import selection_menu
 
 
 class UserInterface:
@@ -15,17 +14,20 @@ class UserInterface:
 
     def run(self):
         pygame.init()
-        pygame.display.set_mode((720, 540))
+        width, height = pygame.display.Info().current_w, pygame.display.Info().current_h
+        pygame.display.set_mode((width * .75, height * .75), pygame.RESIZABLE) #To be determined
 
         running = True
+        next_menu = 0
 
         while (running):
-            running = main_menu()
+            if next_menu == -1:
+                running = False
+            elif next_menu == 0:
+                next_menu = main_menu()
+            elif next_menu == 1:
+                next_menu = selection_menu()
 
-
-            for event in pygame.event.get(pygame.QUIT):
-                if event.type == pygame.QUIT:
-                    exit()
 
     # menu = Menu.EditionMenu()
         # menu.show()
